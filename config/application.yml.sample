@@ -1,0 +1,5 @@
+development:
+  GITHUB_CLIENT_ID:     12345
+  GITHUB_CLIENT_SECRET: 12345
+
+  HOST: localhost:3000

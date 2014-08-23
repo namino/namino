@@ -1,0 +1,14 @@
+.container
+  = form_for @user, url: user_registration_path, role: 'form' do |f|
+    = render 'error_panel', resource: @user
+
+    .form-group
+      = f.label :username
+      = f.text_field :username, class: 'form-control', placeholder: 'User name'
+
+    .form-group
+      = f.label :email
+      = f.text_field :email, type: 'email', class: 'form-control', placeholder: 'Email'
+
+    .text-center
+      = f.button 'Signup', class: 'btn btn-primary'
