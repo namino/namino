@@ -40,6 +40,7 @@ end
 group :development do
   gem 'binding_of_caller' # using with better_errors
   gem 'bullet'
+  gem 'letter_opener'
   gem 'quiet_assets'
   gem 'spring'
   gem 'web-console', '2.0.0.beta3'

@@ -32,6 +32,7 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
+    addressable (2.3.6)
     anbt-sql-formatter (0.0.2)
     angularjs-rails (1.2.22)
     arel (5.0.1.20140414130214)
@@ -98,6 +99,10 @@ GEM
     kaminari (0.16.1)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
+    launchy (2.4.2)
+      addressable (~> 2.3)
+    letter_opener (1.2.0)
+      launchy (~> 2.2)
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
@@ -273,6 +278,7 @@ DEPENDENCIES
   hirb-unicode
   jquery-rails
   kaminari
+  letter_opener
   mysql2
   ngannotate-rails
   omniauth-github
