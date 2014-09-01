@@ -1,0 +1,13 @@
+body {
+  background-color: #ffffff;
+  color: $color-text;
+  font-family: 'Lucida Grande', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
+
+  .fake-link {
+    color: $color-link;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
