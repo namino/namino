@@ -12,8 +12,7 @@ class RegistrationsController < Devise::RegistrationsController
     @user = User.new(user_params).build_relations(@oauth)
 
     if @user.save
-      flash[:info] = 'Thank you for registration! Confirmation mail has sent.'
-      respond_with @user, location: root_path
+      respond_with @user, location: new_blog_path
     else
       render 'new'
     end

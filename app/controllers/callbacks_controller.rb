@@ -4,6 +4,7 @@ class CallbacksController < ApplicationController
     provider = Provider.find_by(name: auth['provider'], uid: auth['uid'])
 
     if provider.present?
+      provider.gh_login = auth['info']['nickname'] if provider.github?
       provider.token = auth['credentials']['token']
       provider.save
 

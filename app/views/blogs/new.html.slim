@@ -1,0 +1,30 @@
+.container
+  h1 = t('blogs.new.new_blog')
+
+  = form_for @blog do |f|
+    .form-group
+      = f.label :title
+      = f.text_field :title, class: 'form-control'
+
+    .form-group
+      = f.label :urlname
+      = f.text_field :urlname, class: 'form-control'
+
+    p.text-muted
+      = t('blogs.new.your_blog_url_will_be')
+      |  :
+      = "https://annict.#{ENV['HOST']}"
+
+    .row
+      - current_user.user_orgs.each do |ur|
+        .col-xs-6.col-md-3
+          = f.label :gh_login, value: ur.login do
+            = image_tag ur.avatar_url, alt: ur.login, size: '50x50', class: 'img-rounded'
+            = ur.login
+          = f.radio_button :gh_login, ur.login
+
+    .form-group
+      = f.label :gh_repo_name
+      = f.text_field :gh_repo_name, class: 'form-control'
+
+    = f.submit class: 'btn btn-primary'

@@ -6,5 +6,10 @@ Rails.application.routes.draw do
                 registrations: :registrations
               },
               path_names: { sign_up: 'signup', sign_in: 'signin', sign_out: 'signout' }
+
+  resources :blogs, only: [:new, :create]
+
+  get 'b/:urlname', to: 'blogs#show', as: :blog
+
   root 'home#index'
 end

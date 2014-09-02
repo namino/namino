@@ -4,8 +4,10 @@ class User < ActiveRecord::Base
   devise :confirmable, :database_authenticatable, :omniauthable,
          :registerable, :trackable
 
-  has_one :profile
-  has_one :provider
+  has_many :blogs, through: :ownerships, dependent: :destroy
+  has_many :ownerships, dependent: :destroy
+  has_many :providers, dependent: :destroy
+  has_one :profile, dependent: :destroy
 
   validates :email,    presence: true, uniqueness: true, email: true
   validates :username, presence: true, uniqueness: true, length: { maximum: 20 },
@@ -18,8 +20,9 @@ class User < ActiveRecord::Base
 
   def build_relations(oauth)
     self.build_provider do |p|
-      p.name  = oauth['provider']
-      p.uid   = oauth['uid']
+      p.name = oauth['provider']
+      p.gh_login = oauth['info']['nickname'] if oauth['provider'] == 'github'
+      p.uid = oauth['uid']
       p.token = oauth['credentials']['token']
     end
 
@@ -28,5 +31,20 @@ class User < ActiveRecord::Base
     end
 
     self
+  end
+
+  def client
+    Octokit::Client.new(access_token: providers.github.token)
+  end
+
+  def user_orgs
+    ary = []
+
+    ary << Github::UserOrg.new(client.user)
+    client.organizations.each do |org|
+      ary << Github::UserOrg.new(org)
+    end
+
+    ary
   end
 end
