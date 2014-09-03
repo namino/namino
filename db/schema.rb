@@ -19,11 +19,13 @@ ActiveRecord::Schema.define(version: 20140901153428) do
     t.string   "gh_repo_name",                 null: false
     t.string   "title",                        null: false
     t.boolean  "first_pushed", default: false, null: false
+    t.string   "hook_key",                     null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "blogs", ["gh_login", "gh_repo_name"], name: "index_blogs_on_gh_login_and_gh_repo_name", unique: true, using: :btree
+  add_index "blogs", ["hook_key"], name: "index_blogs_on_hook_key", unique: true, using: :btree
   add_index "blogs", ["urlname"], name: "index_blogs_on_urlname", unique: true, using: :btree
 
   create_table "ownerships", force: true do |t|

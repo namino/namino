@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
   def encrypted_password; end
 
   def build_relations(oauth)
-    self.build_provider do |p|
+    self.providers.new do |p|
       p.name = oauth['provider']
       p.gh_login = oauth['info']['nickname'] if oauth['provider'] == 'github'
       p.uid = oauth['uid']

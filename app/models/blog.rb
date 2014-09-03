@@ -6,10 +6,19 @@ class Blog < ActiveRecord::Base
   validates :title, presence: true
   validates :urlname, presence: true
 
+  before_create :set_hook_key
   before_create :create_repo
 
 
+  def repo
+    "#{gh_login}/#{gh_repo_name}"
+  end
+
   private
+
+  def set_hook_key
+    self.hook_key = SecureRandom.uuid
+  end
 
   def create_repo
     if originator.providers.github.gh_login == gh_login
@@ -17,5 +26,30 @@ class Blog < ActiveRecord::Base
     else
       originator.client.create_repository(gh_repo_name, organization: gh_login)
     end
+
+    create_contents
+    create_hook
+  end
+
+  def create_contents
+    path = 'README.md'
+    message = 'Add README'
+    file = File.open('lib/samples/README.md')
+
+    originator.client.create_contents(repo, path, message, file: file)
+
+    path = 'posts/hello-world.md'
+    message = 'Add sample post file'
+    file = File.open('lib/samples/posts/hello-world.md')
+
+    originator.client.create_contents(repo, path, message, file: file)
+  end
+
+  def create_hook
+    url = "#{ENV['GITHUB_HOOK_URL']}/api/hooks/#{hook_key}/receive"
+    config = { url: url, content_type: 'json' }
+    options = { events: ['push'], active: true }
+
+    originator.client.create_hook(repo, 'web', config, options)
   end
 end
