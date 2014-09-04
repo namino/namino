@@ -32,17 +32,27 @@ class Blog < ActiveRecord::Base
   end
 
   def create_contents
-    path = 'README.md'
-    message = 'Add README'
-    file = File.open('lib/samples/README.md')
+    contents = [
+      {
+        path: 'README.md',
+        message: 'Add README',
+        file: File.open('lib/sample/README.md')
+      },
+      {
+        path: 'posts/hello-world.md',
+        message: 'Add sample post file',
+        file: File.open('lib/sample/posts/hello-world.md')
+      },
+      {
+        path: 'posts/secret.md',
+        message: 'Add sample secret post file',
+        file: File.open('lib/sample/posts/secret.md')
+      }
+    ]
 
-    originator.client.create_contents(repo, path, message, file: file)
-
-    path = 'posts/hello-world.md'
-    message = 'Add sample post file'
-    file = File.open('lib/samples/posts/hello-world.md')
-
-    originator.client.create_contents(repo, path, message, file: file)
+    contents.each do |c|
+      originator.client.create_contents(repo, c[:path], c[:message], file: c[:file])
+    end
   end
 
   def create_hook
